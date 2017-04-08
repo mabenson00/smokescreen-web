@@ -1,0 +1,28 @@
+{
+
+  "manifest_version": 2,
+  "name": "Smokescreen",
+  "version": "1.0",
+
+  "description": "redirects web pages",
+
+  "icons": {
+    "48": "icons/border-48.png"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["http://*/*","https://*/*"],
+      "js": ["js/smokescreen.js"]
+    }
+  ],
+
+  "background": {
+
+    "scripts":["overlord.js"]
+  },
+  "permissions": [
+    "tabs","https://*/*","http://*/*","webNavigation","storage"
+  ]
+
+}
