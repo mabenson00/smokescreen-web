@@ -11,6 +11,7 @@ function createNewTab(tabId){
 
 function handleMessages(request, sender, orderWindow) {
   console.log(request);
+
   switch(request){
     case "kickoff":
       kickoff();
