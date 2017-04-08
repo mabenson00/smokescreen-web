@@ -1,7 +1,16 @@
 
-function openNewBackgroundTab(){
-    var link = getLinks(window.document);
-    window.location=link;
+function serveMaster(request, sender, response){
+  console.log("yes master");
+  var s = new XMLSerializer()
+  var doc = s.serializeToString(document);
+  console.log(doc);
+
+  var link = getLinks(document);
+  window.location=link;
+}
+
+function validUrl(url){
+  //here
 }
 
 function getLinks(doc) {
@@ -10,8 +19,17 @@ function getLinks(doc) {
   for (i = 0; i < linkObjects.length; i++) {
     urls.push(linkObjects[i].href)
   }
-  var url = urls[Math.floor(Math.random()*urls.length)];
+  var url;
+  while(true){
+    url = urls[Math.floor(Math.random()*urls.length)];
+    if(validUrl(url)){
+      break;
+    }
+  }
+
   return url
 }
 
-window.onMessage(kickoff, openNewBackgroundTab, false);
+console.log("going");
+browser.runtime.sendMessage("kickoff");
+browser.runtime.onMessage.addListener(serveMaster);
