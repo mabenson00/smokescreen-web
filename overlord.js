@@ -1,20 +1,50 @@
 var runningTab;
+var startingPoints = ["http://www.google.com", "http://www.wikipedia.org", "http://www.twitch.tv", "http://www.whitehouse.gov"];
 
+function createNewTab(tabId){
+  console.log("Tab was closed");
+  if(tabId == runningTab.id){
+    runningTab = undefined;
+    kickoff();
+  }
+}
 
-function kickoff(request, sender, orderWindow){
+function handleMessages(request, sender, orderWindow) {
   console.log(request);
-  console.log(sender);
+  switch(request){
+    case "kickoff":
+      kickoff();
+      break;
+    case "restart":
+      restart();
+      break;
+  }
+}
 
+function restart(){
+  console.log("restarting");
+  browser.tabs.remove(runningTab.id);
+  runningTab = undefined;
+  kickoff();
+}
+
+function getStartingPoint(){
+  return startingPoints[Math.floor(Math.random()*startingPoints.length)];
+}
+
+function kickoff(){
   if (runningTab == undefined){
-  browser.tabs.create({'active': false,
-                      'url': 'file:///Users/apprentice/smokescreen/test_site/good1.html'},
-                      function(tab){
-                        runningTab = tab;
-                      });
-    console.log("new tab is" + runningTab);
-  }else{console.log("tab exists")};
+    browser.tabs.create({'active': false,
+                        'url': getStartingPoint()},
+                        function(tab){
+                          runningTab = tab;
+                        });
+      console.log("new tab is" + runningTab);
+    }else{console.log("tab exists")};
 
   browser.tabs.sendMessage(runningTab.id, {"tabId":runningTab.id});
 }
 
-browser.runtime.onMessage.addListener(kickoff);
+console.log("hmm");
+browser.tabs.onRemoved.addListener(createNewTab);
+browser.runtime.onMessage.addListener(handleMessages);
