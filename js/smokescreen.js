@@ -1,13 +1,18 @@
 
+function askForRestart(){
+  console.log("restarting");
+  browser.runtime.sendMessage("restart");
+}
 function serveMaster(request, sender, response){
-  console.log("yes master");
-  var s = new XMLSerializer()
+  var s = new XMLSerializer();
   var doc = s.serializeToString(document);
-  console.log(doc);
 
   var link = getLinks(document);
-  window.location=link;
+  if(link == undefined){
+    askForRestart();
+  }else{  window.location=link}
 }
+
 
 function validUrl(url){
   //here
@@ -22,6 +27,7 @@ function validUrl(url){
   return true;
 }
 
+
 function getLinks(doc) {
   var linkObjects = doc.getElementsByTagName("a");
   var urls=[]
@@ -29,17 +35,27 @@ function getLinks(doc) {
     urls.push(linkObjects[i].href)
   }
   var url;
-  while(true){
+
+  console.log("We have " + urls.length +" links");
+  if(urls.length == 0){
+    console.log("asking for restart");
+    askForRestart();
+  }else{
     url = urls[Math.floor(Math.random()*urls.length)];
+
     if(validUrl(url)){
       console.log("Found valid url.")
       break;
     }
-  }
 
-  return url
+    return url;
+
+  }
 }
 
 console.log("going");
+
+var restarting = setTimeout(askForRestart, 10000)
+
 browser.runtime.sendMessage("kickoff");
 browser.runtime.onMessage.addListener(serveMaster);
