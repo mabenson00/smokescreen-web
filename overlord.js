@@ -50,12 +50,14 @@ function saveConfiguration(){
     startingPoints: startingPoints,
     timeoutDelay: timeoutDelay
   };
-
   browser.storage.local.set({config: config});
 }
 
 function createNewTab(tabId){
   console.log("Tab was closed");
+  if (killSmokescreen){
+    return;
+  }
   if(tabId == runningTab.id){
     runningTab = undefined;
     kickoff();
@@ -85,7 +87,8 @@ function handleMessages(request, sender, orderWindow) {
       setDefaultConfiguration();
       break;
     case "stop":
-      killSmokescreen(request, sender);
+      killSmokescreen();
+      break;
   }
 }
 
@@ -124,6 +127,12 @@ function kickoff(){
       console.log("new tab is" + runningTab);
     }else{console.log("tab exists")};
     var timeoutId = setTimeout(sendResponse, timeToWait);
+}
+
+function killSmokescreen(){
+  console.log("killing smokescreen");
+  browser.tabs.remove(runningTab.id);
+  return true;
 }
 
 console.log("hmm");

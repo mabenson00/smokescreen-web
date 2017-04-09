@@ -15,6 +15,7 @@ function onGot(item) {
     console.log(`got ${item}`)
     myFeed = item.myFeed
   }
+  console.log(myFeed);
 }
 
 function onError(error) {
@@ -29,6 +30,7 @@ function askForRestart(){
   console.log("restarting");
   browser.runtime.sendMessage("restart");
 }
+
 function serveMaster(request, sender, response){
   console.log(request);
   var restarting = setTimeout(askForRestart, request.timeoutDelay);
@@ -49,23 +51,41 @@ function serveMaster(request, sender, response){
 
 
 function saveUrls(url) {
-  console.log(myFeed)
   console.log("about to push")
   myFeed.push(url)
   browser.storage.local.set({
     myFeed: myFeed
   })
+  //console.log("my feed: " + myFeed);
+}
+
+function isLoop(url){
+  // console.log("is-loop url: " + url);
+  // console.log("url type: " + typeof(url));
+  // console.log("url in myFeed? " + myFeed.includes(url));
+  if(myFeed.includes(url)){
+    console.log("caught in loop");
+    browser.runtime.sendMessage("stop");
+    return true;
+  }
+  else{
+    return false;
+  }
 }
 
 function validUrl(url){
   //here
-  var regskip = [/calendar/i,/advanced/i,/click /i,/terms/i,/Groups/i,/Images/,/Maps/,/search/i,/cache/i,/similar/i,/&#169;/,/sign in/i,/help[^Ss]/i,/download/i,/print/i,/Books/i,/rss/i,/google/i,/bing/i,/yahoo/i,/aol/i,/html/i,/ask/i,/xRank/,/permalink/i,/aggregator/i,/trackback/,/comment/i,/More/,/business solutions/i,/result/i,/ view /i,/Legal/,/See all/,/links/i,/submit/i,/Sites/i,/ click/i,/Blogs/,/See your mess/,/feedback/i,/sponsored/i,/preferences/i,/privacy/i,/News/,/Finance/,/Reader/,/Documents/,/windows live/i,/tell us/i,/shopping/i,/Photos/,/Video/,/Scholar/,/AOL/,/advertis/i,/Webmasters/,/MapQuest/,/Movies/,/Music/,/Yellow Pages/,/jobs/i,/answers/i,/options/i,/customize/i,/settings/i,/Developers/,/cashback/,/Health/,/Products/,/QnABeta/,/<more>/,/Travel/,/Personals/,/Local/,/Trademarks/,/cache/i,/similar/i,/login/i,/signin/i,/mail/i,/feed/i,/pay/i,/accounts/i,/.tar/i,/.exe/i,/.zip/i,/.pdf/i,/.wav/i,/.txt/i];
-  debugger
+  var regskip = [/calendar/i,/advanced/i,/click /i,/terms/i,/Groups/i,/Images/,/Maps/,/search/i,/cache/i,/similar/i,/&#169;/,/sign in/i,/help[^Ss]/i,/download/i,/print/i,/Books/i,/rss/i,/google/i,/bing/i,/yahoo/i,/aol/i,/html/i,/ask/i,/xRank/,/permalink/i,/aggregator/i,/trackback/,/comment/i,/More/,/business solutions/i,/result/i,/ view /i,/Legal/,/See all/,/links/i,/submit/i,/Sites/i,/ click/i,/Blogs/,/See your mess/,/feedback/i,/sponsored/i,/preferences/i,/privacy/i,/News/,/Finance/,/Reader/,/Documents/,/windows live/i,/tell us/i,/shopping/i,/Photos/,/Video/,/Scholar/,/AOL/,/advertis/i,/Webmasters/,/MapQuest/,/Movies/,/Music/,/Yellow Pages/,/jobs/i,/answers/i,/options/i,/customize/i,/settings/i,/Developers/,/cashback/,/Health/,/Products/,/QnABeta/,/<more>/,/Travel/,/Personals/,/Local/,/Trademarks/,/cache/i,/similar/i,/login/i,/signin/i,/mail/i,/feed/i,/pay/i,/accounts/i,/.tar/i,/.exe/i,/.zip/i,/.pdf/i,/.wav/i,/.txt/i,/.js/i,/.jse/i,/.msi/i,/.bat/i,/.reg/i,/.doc/i,/.xls/i,/.ppt/i];
   for(var i = 0; i < regskip.length; i++){
 
     if(regskip[i].test(url)){
       return false;
     }
+    //one more test with testing for url in loop
+    if(isLoop(url)){
+      return false;
+    }
+
   }
   return true;
 
