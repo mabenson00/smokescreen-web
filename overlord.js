@@ -1,6 +1,58 @@
 var runningTab;
 var log = [];
-var startingPoints = ["http://www.google.com", "http://www.wikipedia.org", "http://www.whitehouse.gov"];
+var configured;
+var startingPoints;
+var timeToWait;
+var timeoutDelay;
+var optionsPage = browser.runtime.openOptionsPage();
+function configure(){
+
+  let configJson = browser.storage.local.get("config");
+  configJson.then(setConfiguration, configError);
+}
+
+function setConfiguration(config){
+  var conf = config.config
+  console.log(conf);
+  if(config.isSet == undefined){
+    setDefaultConfiguration();
+  } else {
+    restoreConfiguration(conf);
+  }
+}
+
+function setDefaultConfiguration(){
+  console.log("using default configuration");
+  isSet = true;
+  timeToWait = 5000;
+  startingPoints = ["http://www.google.com", "http://www.wikipedia.org", "http://www.whitehouse.gov"];
+  timeoutDelay = 10000;
+  saveConfiguration();
+}
+
+function restoreConfiguration(conf){
+  console.log("restoring configuration");
+  timeToWait = conf.timeToWait;
+  startingPoints = conf.startingPoints;
+  timeoutDelay = conf.timeoutDelay;
+}
+
+function configError(){
+  console.log("configuration error");
+}
+
+function saveConfiguration(){
+  console.log("saving configuration");
+  console.log(startingPoints);
+  let config = {
+    isSet: "config set",
+    timeToWait: timeToWait,
+    startingPoints: startingPoints,
+    timeoutDelay: timeoutDelay
+  };
+
+  browser.storage.local.set({config: config});
+}
 
 function createNewTab(tabId){
   console.log("Tab was closed");
@@ -23,14 +75,23 @@ function handleMessages(request, sender, orderWindow) {
     case "restart":
       restart();
       break;
+    case "options":
+      optionsPage.then(onOpened, onError);
+      break;
+    case "saveconfig":
+      saveConfiguration();
+      break;
+    case "restoredefaults":
+      setDefaultConfiguration();
+      break;
     case "stop":
       killSmokescreen(request, sender);
-    
+
   }
 }
 
 function sendResponse(){
-  browser.tabs.sendMessage(runningTab.id, {"tabId":runningTab.id});
+  browser.tabs.sendMessage(runningTab.id, {"tabId":runningTab.id, "timeoutDelay": timeoutDelay});
 }
 
 function restart(){
@@ -52,6 +113,9 @@ function getStartingPoint(){
 }
 
 function kickoff(){
+  if(configured == undefined){
+    configure();
+  }
   if (runningTab == undefined){
     browser.tabs.create({'active': false,
                         'url': getStartingPoint()},
@@ -60,9 +124,10 @@ function kickoff(){
                         });
       console.log("new tab is" + runningTab);
     }else{console.log("tab exists")};
-    var timeoutId = setTimeout(sendResponse, 5000);
+    var timeoutId = setTimeout(sendResponse, timeToWait);
 }
 
 console.log("hmm");
+
 browser.tabs.onRemoved.addListener(createNewTab);
 browser.runtime.onMessage.addListener(handleMessages);
