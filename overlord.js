@@ -1,5 +1,6 @@
 var runningTab;
-var startingPoints = ["http://www.google.com", "http://www.wikipedia.org", "http://www.twitch.tv", "http://www.whitehouse.gov"];
+var log = [];
+var startingPoints = ["http://www.google.com", "http://www.wikipedia.org", "http://www.whitehouse.gov"];
 
 function createNewTab(tabId){
   console.log("Tab was closed");
@@ -11,13 +12,20 @@ function createNewTab(tabId){
 
 function handleMessages(request, sender, orderWindow) {
   console.log(request);
+
   switch(request){
+    case "log":
+      log(request);
+      break;
     case "kickoff":
       kickoff();
       break;
     case "restart":
       restart();
       break;
+    case "stop":
+      killSmokescreen(request, sender);
+    
   }
 }
 
@@ -30,6 +38,13 @@ function restart(){
   browser.tabs.remove(runningTab.id);
   runningTab = undefined;
   kickoff();
+}
+
+function logRequest(request, sender){
+
+  console.log(request);
+  log.push([sender, request]);
+  console.log(log);
 }
 
 function getStartingPoint(){

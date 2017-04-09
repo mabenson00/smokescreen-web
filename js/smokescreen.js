@@ -6,14 +6,19 @@ function askForRestart(){
 function serveMaster(request, sender, response){
 
   var restarting = setTimeout(askForRestart, 10000);
-  
+
   var s = new XMLSerializer();
   var doc = s.serializeToString(document);
 
   var link = getLinks(document);
   if(link == undefined){
     askForRestart();
-  }else{  window.location=link}
+  }else{
+    browser.runtime.sendMessage("log", link);
+
+    window.location=link
+
+  }
 }
 
 
