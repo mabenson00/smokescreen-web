@@ -32,7 +32,7 @@ function setDefaultConfiguration(){
 
 function restoreConfiguration(conf){
   console.log("restoring configuration");
-  timeToWait = conf.timeToWait;
+  timeToWait = conf.timeToWait; //
   startingPoints = conf.startingPoints;
   timeoutDelay = conf.timeoutDelay;
 }
