@@ -1,3 +1,29 @@
+var myFeed;
+
+function isEmpty(obj) {
+    for(var key in obj) {
+        if(obj.hasOwnProperty(key))
+            return false;
+    }
+    return true;
+}
+
+function onGot(item) {
+  if (isEmpty(item)) {
+    myFeed=[]
+  } else {
+    console.log(`got ${item}`)
+    myFeed = item.myFeed
+  }
+}
+
+function onError(error) {
+  console.log(`Error: ${error}`)
+}
+
+let gettingItem = browser.storage.local.get('myFeed');
+gettingItem.then(onGot, onError);
+
 
 function serveMaster(request, sender, response){
   console.log("yes master");
@@ -9,9 +35,15 @@ function serveMaster(request, sender, response){
   window.location=link;
 }
 
-function validUrl(url){
-  //here
+function saveUrls(url) {
+  console.log(myFeed)
+  console.log("about to push")
+  myFeed.push(url)
+  browser.storage.local.set({
+    myFeed: myFeed
+  })
 }
+
 
 function getLinks(doc) {
   var linkObjects = doc.getElementsByTagName("a");
@@ -20,13 +52,9 @@ function getLinks(doc) {
     urls.push(linkObjects[i].href)
   }
   var url;
-  while(true){
-    url = urls[Math.floor(Math.random()*urls.length)];
-    if(validUrl(url)){
-      break;
-    }
-  }
 
+    url = urls[Math.floor(Math.random()*urls.length)];
+    saveUrls(url)
   return url
 }
 
