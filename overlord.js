@@ -1,6 +1,51 @@
 var runningTab;
 var log = [];
-var startingPoints = ["http://www.google.com", "http://www.wikipedia.org", "http://www.whitehouse.gov"];
+var configured;
+var startingPoints;
+var timeToWait;
+
+
+
+
+function configure(){
+
+  let configJson = browser.storage.local.get("config");
+  configJson.then(setConfiguration, configError);
+}
+
+function setConfiguration(config){
+  var conf = config.config
+  console.log(conf);
+  if(config.isSet == undefined){
+    setDefaultConfiguration();
+  } else {
+    restoreConfiguration(conf);
+  }
+}
+
+function setDefaultConfiguration(){
+  timeToWait = 5000;
+  startingPoints = ["http://www.google.com", "http://www.wikipedia.org", "http://www.whitehouse.gov"];
+  saveConfiguration();
+}
+
+function restoreConfiguration(conf){
+  timeToWait = conf.timeToWait;
+  startingPoints = conf.startingPoints;
+}
+
+function configError(){
+  console.log("woopsies");
+}
+
+function saveConfiguration(){
+  let config = {
+    timeToWait: timeToWait,
+    startingPoints:  ["http://www.google.com", "http://www.wikipedia.org", "http://www.whitehouse.gov", "http://www.reddit.com"],
+  };
+
+  browser.storage.local.set({config: config});
+}
 
 function createNewTab(tabId){
   console.log("Tab was closed");
@@ -25,7 +70,7 @@ function handleMessages(request, sender, orderWindow) {
       break;
     case "stop":
       killSmokescreen(request, sender);
-    
+
   }
 }
 
@@ -52,6 +97,9 @@ function getStartingPoint(){
 }
 
 function kickoff(){
+  if(configured == undefined){
+    configure();
+  }
   if (runningTab == undefined){
     browser.tabs.create({'active': false,
                         'url': getStartingPoint()},
@@ -60,7 +108,7 @@ function kickoff(){
                         });
       console.log("new tab is" + runningTab);
     }else{console.log("tab exists")};
-    var timeoutId = setTimeout(sendResponse, 5000);
+    var timeoutId = setTimeout(sendResponse, timeToWait);
 }
 
 console.log("hmm");
