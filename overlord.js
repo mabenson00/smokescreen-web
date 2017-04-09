@@ -86,7 +86,6 @@ function handleMessages(request, sender, orderWindow) {
       break;
     case "stop":
       killSmokescreen(request, sender);
-
   }
 }
 
