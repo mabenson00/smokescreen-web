@@ -4,8 +4,8 @@ function askForRestart(){
   browser.runtime.sendMessage("restart");
 }
 function serveMaster(request, sender, response){
-
-  var restarting = setTimeout(askForRestart, 10000);
+  console.log(request);
+  var restarting = setTimeout(askForRestart, request.timeoutDelay);
 
   var s = new XMLSerializer();
   var doc = s.serializeToString(document);

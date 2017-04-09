@@ -3,9 +3,7 @@ var log = [];
 var configured;
 var startingPoints;
 var timeToWait;
-
-
-
+var timeoutDelay;
 
 function configure(){
 
@@ -24,24 +22,33 @@ function setConfiguration(config){
 }
 
 function setDefaultConfiguration(){
+  console.log("using default configuration");
+  isSet = true;
   timeToWait = 5000;
   startingPoints = ["http://www.google.com", "http://www.wikipedia.org", "http://www.whitehouse.gov"];
+  timeoutDelay = 10000;
   saveConfiguration();
 }
 
 function restoreConfiguration(conf){
+  console.log("restoring configuration");
   timeToWait = conf.timeToWait;
   startingPoints = conf.startingPoints;
+  timeoutDelay = conf.timeoutDelay;
 }
 
 function configError(){
-  console.log("woopsies");
+  console.log("configuration error");
 }
 
 function saveConfiguration(){
+  console.log("saving configuration");
+  console.log(startingPoints);
   let config = {
+    isSet: "config set",
     timeToWait: timeToWait,
-    startingPoints:  ["http://www.google.com", "http://www.wikipedia.org", "http://www.whitehouse.gov", "http://www.reddit.com"],
+    startingPoints: startingPoints,
+    timeoutDelay: timeoutDelay
   };
 
   browser.storage.local.set({config: config});
@@ -75,7 +82,7 @@ function handleMessages(request, sender, orderWindow) {
 }
 
 function sendResponse(){
-  browser.tabs.sendMessage(runningTab.id, {"tabId":runningTab.id});
+  browser.tabs.sendMessage(runningTab.id, {"tabId":runningTab.id, "timeoutDelay": timeoutDelay});
 }
 
 function restart(){
