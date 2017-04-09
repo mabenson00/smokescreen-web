@@ -11,7 +11,6 @@ function createNewTab(tabId){
 
 function handleMessages(request, sender, orderWindow) {
   console.log(request);
-
   switch(request){
     case "kickoff":
       kickoff();
@@ -20,6 +19,10 @@ function handleMessages(request, sender, orderWindow) {
       restart();
       break;
   }
+}
+
+function sendResponse(){
+  browser.tabs.sendMessage(runningTab.id, {"tabId":runningTab.id});
 }
 
 function restart(){
@@ -42,8 +45,7 @@ function kickoff(){
                         });
       console.log("new tab is" + runningTab);
     }else{console.log("tab exists")};
-
-  browser.tabs.sendMessage(runningTab.id, {"tabId":runningTab.id});
+    var timeoutId = setTimeout(sendResponse, 5000);
 }
 
 console.log("hmm");

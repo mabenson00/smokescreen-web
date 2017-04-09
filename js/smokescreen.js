@@ -4,6 +4,9 @@ function askForRestart(){
   browser.runtime.sendMessage("restart");
 }
 function serveMaster(request, sender, response){
+
+  var restarting = setTimeout(askForRestart, 10000);
+  
   var s = new XMLSerializer();
   var doc = s.serializeToString(document);
 
@@ -45,7 +48,6 @@ function getLinks(doc) {
 
     if(validUrl(url)){
       console.log("Found valid url.")
-      break;
     }
 
     return url;
@@ -55,7 +57,7 @@ function getLinks(doc) {
 
 console.log("going");
 
-var restarting = setTimeout(askForRestart, 10000)
+
 
 browser.runtime.sendMessage("kickoff");
 browser.runtime.onMessage.addListener(serveMaster);
