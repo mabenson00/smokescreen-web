@@ -4,7 +4,7 @@ var configured;
 var startingPoints;
 var timeToWait;
 var timeoutDelay;
-
+var optionsPage = browser.runtime.openOptionsPage();
 function configure(){
 
   let configJson = browser.storage.local.get("config");
@@ -75,6 +75,15 @@ function handleMessages(request, sender, orderWindow) {
     case "restart":
       restart();
       break;
+    case "options":
+      optionsPage.then(onOpened, onError);
+      break;
+    case "saveconfig":
+      saveConfiguration();
+      break;
+    case "restoredefaults":
+      setDefaultConfiguration();
+      break;
     case "stop":
       killSmokescreen(request, sender);
 
@@ -119,5 +128,6 @@ function kickoff(){
 }
 
 console.log("hmm");
+
 browser.tabs.onRemoved.addListener(createNewTab);
 browser.runtime.onMessage.addListener(handleMessages);
