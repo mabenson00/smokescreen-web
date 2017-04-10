@@ -10,10 +10,12 @@ var isActive = false;
 function pressedStartButton(){
   if(isActive == true){
     console.log("stop button pressed");
+    browser.browserAction.setIcon({path: "icons/icon-off.png"});
     killSmokescreen();
   }else{
     console.log("start button pressed");
     isActive = true;
+    browser.browserAction.setIcon({path: "icons/icon-on.png"});
     kickoff();
   }
 }
