@@ -53,7 +53,7 @@ function handleMessages(request, sender, orderWindow) {
       killSmokescreen();
       break;
     case "config":
-      confi
+      configure();
 
   }
 }
@@ -127,7 +127,6 @@ function blockRequests(request, opts, extra){
     console.log(request);
     return {cancel:true};
   }
-
 }
 
 function killSmokescreen(){
