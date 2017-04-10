@@ -1,4 +1,5 @@
 function saveConfiguration(event){
+
   event.preventDefault();
   console.log("saving configuration");
   console.log(startingPoints);
@@ -13,26 +14,36 @@ function saveConfiguration(event){
 }
 
 function parseStartingPoints(str){
+  var newStarts = [];
+  console.log(str);
   var starts = str.split(",");
+  console.log(starts);
   for(point of starts){
+    console.log(point);
     splits = point.split(".");
-    if (splits[0].substr(0,4) != "http" || splits[0].substr(0,3) != "www"){
-      splits[0] = "http://www";
+    console.log(splits);
+    if (splits[0].substr(0,4) != "http"){
+      if (splits[0].substr(0,3) != "www"){
+        splits.unshift("http://www");
+      }else{
+        splits[0] = "http://www";
+      }
     }
-    point = splits.join(".");
-  }
 
-  return starts;
+
+    newStarts.push(splits.join("."));
+  }
+  console.log(newStarts);
+  return newStarts;
 }
 
 function restoreOptions(){
   function setCurrentChoices(conf){
     console.log("restoring configuration");
-    document.querySelector("#timeToWait").value = conf.timeToWait || 5000;
-    document.querySelector("#startingPoints").value = conf.startingPoints || ["http://www.google.com", "http://www.wikipedia.org", "http://www.whitehouse.gov"];
-    document.querySelector("#timeoutDelay").value = conf.timeoutDelay || 10000;
+    document.querySelector("#timeToWait").value = conf.config.timeToWait || 5000;
+    document.querySelector("#startingPoints").value = conf.config.startingPoints || ["http://www.google.com", "http://www.wikipedia.org", "http://www.whitehouse.gov"];
+    document.querySelector("#timeoutDelay").value = conf.config.timeoutDelay || 10000;
   }
-
 
   function onError(error) {
     console.log(`Error: ${error}`);
@@ -40,6 +51,15 @@ function restoreOptions(){
 
   var getting = browser.storage.local.get("config");
   getting.then(setCurrentChoices, onError);
+}
+
+function setDefaultConfiguration(){
+  console.log("using default configuration");
+  isSet = true;
+  timeToWait = 5000;
+  startingPoints = ["http://www.google.com", "http://www.wikipedia.org", "http://www.whitehouse.gov"];
+  timeoutDelay = 10000;
+  saveConfiguration();
 }
 
 //

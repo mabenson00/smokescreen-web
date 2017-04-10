@@ -6,52 +6,11 @@ var timeToWait;
 var timeoutDelay;
 var optionsPage = browser.runtime.openOptionsPage();
 var isActive = true;
-function configure(){
 
-  let configJson = browser.storage.local.get("config");
-  configJson.then(setConfiguration, configError);
-}
 
-function setConfiguration(config){
-  var conf = config.config
-  console.log(conf);
-  if(config.isSet == undefined){
-    setDefaultConfiguration();
-  } else {
-    restoreConfiguration(conf);
-  }
-}
-
-function setDefaultConfiguration(){
-  console.log("using default configuration");
-  isSet = true;
-  timeToWait = 5000;
-  startingPoints = ["http://www.google.com", "http://www.wikipedia.org", "http://www.whitehouse.gov"];
-  timeoutDelay = 10000;
-  saveConfiguration();
-}
-
-function restoreConfiguration(conf){
-  console.log("restoring configuration");
-  timeToWait = conf.timeToWait; //
-  startingPoints = conf.startingPoints;
-  timeoutDelay = conf.timeoutDelay;
-}
 
 function configError(){
   console.log("configuration error");
-}
-
-function saveConfiguration(){
-  console.log("saving configuration");
-  console.log(startingPoints);
-  let config = {
-    isSet: "config set",
-    timeToWait: timeToWait,
-    startingPoints: startingPoints,
-    timeoutDelay: timeoutDelay
-  };
-  browser.storage.local.set({config: config});
 }
 
 function createNewTab(tabId){
@@ -80,12 +39,6 @@ function handleMessages(request, sender, orderWindow) {
       break;
     case "options":
       optionsPage.then(onOpened, onError);
-      break;
-    case "saveconfig":
-      saveConfiguration();
-      break;
-    case "restoredefaults":
-      setDefaultConfiguration();
       break;
     case "stop":
       killSmokescreen();
@@ -116,19 +69,40 @@ function getStartingPoint(){
 }
 
 function kickoff(){
-  if(configured == undefined){
-    configure();
-  }
-  if (runningTab == undefined){
-    browser.tabs.create({'active': false,
-                        'url': getStartingPoint()},
-                        function(tab){
-                          runningTab = tab;
-                        });
-      console.log("new tab is" + runningTab);
-    }else{console.log("tab exists")};
+
+  function go(){
+    if (runningTab == undefined){
+      browser.tabs.create({'active': false,
+                          'url': getStartingPoint()},
+                          function(tab){
+                            runningTab = tab;
+                          });
+        console.log("new tab is" + runningTab);
+      }else{console.log("tab exists")};
     var timeoutId = setTimeout(sendResponse, timeToWait);
+  }
+
+  function configure(){
+    let configJson = browser.storage.local.get("config");
+    configJson.then(restoreConfiguration, configError);
+
+  }
+
+  function restoreConfiguration(conf){
+    console.log("restoring configuration");
+    console.log(conf.config);
+    timeToWait = conf.config.timeToWait; //
+    startingPoints = conf.config.startingPoints;
+    timeoutDelay = conf.config.timeoutDelay;
+    configured = true;
+    console.log("promises are all good, going now");
+    go();
+  }
+
+  configure();
 }
+
+
 
 function killSmokescreen(){
   console.log("killing smokescreen");
