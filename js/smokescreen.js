@@ -25,7 +25,6 @@ function onError(error) {
 let gettingItem = browser.storage.local.get('myFeed');
 gettingItem.then(onGot, onError);
 
-
 function askForRestart(){
   console.log("restarting");
   browser.runtime.sendMessage("restart");

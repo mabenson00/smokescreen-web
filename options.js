@@ -48,7 +48,6 @@ function restoreOptions(){
     console.log(`Error: ${error}`);
   }
 
-
   var getting = browser.storage.local.get("config");
   getting.then(setCurrentChoices, onError);
 }

@@ -28,8 +28,7 @@ function createNewTab(tabId){
     return;
   }
   if(tabId == runningTab.id){
-    runningTab = undefined;
-    kickoff();
+    browser.tabs.tab.update(runningTab.id, {url: getStartingPoint()})
   }
 }
 
@@ -81,7 +80,10 @@ function getStartingPoint(){
 }
 
 function kickoff(){
-
+  if(!isActive){
+    console.log("kickoff blocked.  overlord inactive")
+    return;
+  }
   function go(){
     if (runningTab == undefined){
       browser.tabs.create({'active': false,
@@ -120,7 +122,6 @@ function blockRequests(request){
 
 }
 
-
 function killSmokescreen(){
   console.log("killing smokescreen");
   browser.tabs.remove(runningTab.id);
@@ -130,7 +131,6 @@ function killSmokescreen(){
 }
 
 console.log("hmm");
-
 
 browser.tabs.onRemoved.addListener(createNewTab);
 browser.runtime.onMessage.addListener(handleMessages);
