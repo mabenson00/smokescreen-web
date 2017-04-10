@@ -1,7 +1,6 @@
 
 function saveConfiguration(config){
   browser.storage.local.set({config: config});
-  browser.runtime.sendMessage("kickoff");
 }
 
 function getFormFields(){
@@ -85,4 +84,4 @@ function setDefaultConfiguration(){
 
 
 document.addEventListener("DOMContentLoaded", restoreOptions);
-document.querySelector("form").addEventListener("submit", saveConfiguration)
+document.querySelector("form").addEventListener("submit", getFormFields)

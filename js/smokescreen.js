@@ -97,21 +97,19 @@ function getLinks(doc) {
   }
   var url;
 
-
-  console.log("We have " + urls.length +" links");
-  if(urls.length == 0){
-    console.log("asking for restart");
-    askForRestart();
-  }else{
+  console.log("we have " + urls.length +" urls")
+  for(var a = 0; a < 25 || doIBreak || urls.length==0; a++){
     url = urls[Math.floor(Math.random()*urls.length)];
-
-    if(validUrl(url)){
-      console.log("Found valid url.")
-    }
-    saveUrls(url)
-    return url;
-
+    doIBreak = validUrl(url);
   }
+
+  if(doIBreak){
+      console.log("asking for restart");
+      askForRestart();
+  }
+
+  saveUrls(url);
+  return url;
 
 }
 

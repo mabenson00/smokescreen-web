@@ -80,10 +80,7 @@ function getStartingPoint(){
 }
 
 function kickoff(){
-  if(!isActive){
-    console.log("kickoff blocked.  overlord inactive")
-    return;
-  }
+
   function go(){
     if (runningTab == undefined){
       browser.tabs.create({'active': false,
@@ -111,6 +108,11 @@ function kickoff(){
     configured = true;
     console.log("promises are all good, going now");
     go();
+  }
+
+  if(!isActive){
+    console.log("kickoff blocked.  overlord inactive")
+    return;
   }
 
   configure();
