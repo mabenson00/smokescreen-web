@@ -1,6 +1,11 @@
-function saveConfiguration(event){
 
-  event.preventDefault();
+function saveConfiguration(config){
+  browser.storage.local.set({config: config});
+  browser.runtime.sendMessage("kickoff");
+}
+
+function getFormFields(){
+
   console.log("saving configuration");
   console.log(startingPoints);
   let config = {
@@ -9,9 +14,8 @@ function saveConfiguration(event){
     startingPoints: parseStartingPoints(document.querySelector("#startingPoints").value),
     timeoutDelay: document.querySelector("#timeoutDelay").value
   };
-  browser.storage.local.set({config: config});
-  browser.runtime.sendMessage("kickoff");
 
+  saveConfiguration(config);
 }
 
 function parseStartingPoints(str){
@@ -38,10 +42,14 @@ function parseStartingPoints(str){
 
 function restoreOptions(){
   function setCurrentChoices(conf){
-    console.log("restoring configuration");
-    document.querySelector("#timeToWait").value = conf.config.timeToWait || 5000;
-    document.querySelector("#startingPoints").value = conf.config.startingPoints || ["http://www.google.com", "http://www.wikipedia.org", "http://www.whitehouse.gov"];
-    document.querySelector("#timeoutDelay").value = conf.config.timeoutDelay || 10000;
+    if(conf.config == undefined){
+      setDefaultConfiguration()
+    }else{
+      console.log("restoring configuration");
+      document.querySelector("#timeToWait").value = conf.config.timeToWait || 5000;
+      document.querySelector("#startingPoints").value = conf.config.startingPoints || ["http://www.google.com", "http://www.wikipedia.org", "http://www.whitehouse.gov"];
+      document.querySelector("#timeoutDelay").value = conf.config.timeoutDelay || 10000;
+    }
   }
 
   function onError(error) {
@@ -54,10 +62,12 @@ function restoreOptions(){
 
 function setDefaultConfiguration(){
   console.log("using default configuration");
-  isSet = true;
-  timeToWait = 5000;
-  startingPoints = ["http://www.google.com", "http://www.wikipedia.org", "http://www.whitehouse.gov"];
-  timeoutDelay = 10000;
+  let config = {
+    isSet: true,
+    timeToWait: 5000,
+    startingPoints: ["http://www.google.com", "http://www.wikipedia.org", "http://www.whitehouse.gov"],
+    timeoutDelay: 10000
+  };
   saveConfiguration();
 }
 
