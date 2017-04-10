@@ -7,17 +7,17 @@
   "description": "redirects web pages",
 
   "icons": {
-    "48": "icons/border-48.png"
+    "48": "icons/smoke.png"
   },
 
   "options_ui": {
     "page": "options.html"
   },
-  
+
   "browser_action": {
     "default_icon": {
-      "16": "icons/page-16.png",
-      "32": "icons/page-32.png"
+      "16": "icons/icon-off.png",
+      "32": "icons/icon-off.png"
     }
   },
 
