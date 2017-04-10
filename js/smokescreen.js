@@ -32,6 +32,8 @@ function askForRestart(){
 }
 
 function serveMaster(request, sender, response){
+
+
   console.log(request);
   var restarting = setTimeout(askForRestart, request.timeoutDelay);
 
@@ -74,18 +76,29 @@ function isLoop(url){
 }
 
 function validUrl(url){
-  //here
-  var regskip = [/calendar/i,/advanced/i,/click /i,/Groups/i,/Images/,/Maps/,/search/i,/cache/i,/similar/i,/&#169;/,/sign in/i,/help[^Ss]/i,/download/i,/print/i,/Books/i,/rss/i,/xRank/,/permalink/i,/aggregator/i,/trackback/,/comment/i,/More/,/business solutions/i,/result/i,/ view /i,/Legal/,/See all/,/links/i,/submit/i,/Sites/i,/ click/i,/Blogs/,/See your mess/,/feedback/i,/sponsored/i,/preferences/i,/privacy/i,/News/,/Finance/,/Reader/,/Documents/,/windows live/i,/tell us/i,/shopping/i,/Photos/,/Video/,/Scholar/,/AOL/,/advertis/i,/Webmasters/,/MapQuest/,/Movies/,/Music/,/Yellow Pages/,/jobs/i,/answers/i,/options/i,/customize/i,/settings/i,/Developers/,/cashback/,/Health/,/Products/,/QnABeta/,/<more>/,/Travel/,/Personals/,/Local/,/Trademarks/,/cache/i,/similar/i,/login/i,/signin/i,/mail/i,/feed/i,/pay/i,/accounts/i,/[.]tar$/,/[.]exe$/,/[.]zip$/,/[.]pdf$/,/[.]wav$/,/[.]txt$/,/[.]js$/,/[.]jse$/,/[.]msi$/,/[.]bat$/,/[.]reg$/,/[.]doc$/,/[.]xls$/,/[.]ppt$/];
-  for(var i = 0; i < regskip.length; i++){
+  console.log(url);
+  var regskip = new Array(
+  /calendar/i,/advanced/i,/click /i,/Groups/i,/Images/,/Maps/,/search/i,/cache/i
+    ,/similar/i,/&#169;/,/sign in/i,/help[^Ss]/i,/download/i,/print/i,/Books/i,/rss/i
+    ,/xRank/,/permalink/i,/aggregator/i, /trackback/i,/comment/i,/More/,
+    /business solutions/i,/result/i, /view/i,/Legal/,/See all/,/links/i,/submit/i
+    ,/Sites/i,/ click/i,/Blogs/,/See your mess/,/feedback/i,/sponsored/i,/preferences/i
+    ,/privacy/i,/News/,/Finance/,/Reader/,/Documents/,/windows live/i,/tell us/i
+    ,/shopping/i,/Photos/,/Video/,/Scholar/,/AOL/,/advertis/i,/Webmasters/,/MapQuest/
+    ,/Movies/,/Music/,/Yellow Pages/,/jobs/i,/answers/i,/options/i,/customize/i,/settings/i
+    ,/Developers/,/cashback/,/Health/,/Products/,/QnABeta/,/<more>/,/Travel/,/Personals/
+    ,/Local/,/Trademarks/,/cache/i,/similar/i,/login/i,/signin/i,/mail/i,/feed/i,/pay/i
+    ,/accounts/i,/[.]tar$/,/[.]exe$/,/[.]zip$/,/[.]pdf$/,/[.]wav$/,/[.]txt$/,/[.]js$/
+    ,/[.]jse$/,/[.]msi$/,/[.]bat$/,/[.]reg$/,/[.]doc$/,/[.]xls$/,/[.]ppt$/);
 
-    if(regskip[i].test(url)){
-      console.log(i + ". skipping " + url);
-      console.log(regskip[i]);
-      return false;
-    }
-    //one more test with testing for url in loop
-    //isLoop(url);
-  }
+  regskip.forEach(function(regex){
+      if(regex.test(url)){
+        console.log(i + ". skipping " + url);
+        return false;
+      };
+      //one more test with testing for url in loop
+      //isLoop(url);
+    });
   return true;
 
 }
@@ -98,15 +111,20 @@ function getLinks(doc) {
   }
   var url;
 
-  while(validUrl(url) && urls.length > 0){
+  do {
+
     randomIndex = Math.floor(Math.random()*urls.length);
-    url = urls.slice(randomIndex, randomIndex+1);
-  }
+    url = urls.slice(randomIndex, randomIndex+1)[0];
+
+  } while(!validUrl(url) && urls.length > 0);
+
 
   if(urls.length == 0){
       console.log("asking for restart");
+
       askForRestart();
   }
+  //debugger;
 
   saveUrls(url);
   return url;
