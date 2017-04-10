@@ -5,9 +5,18 @@ var startingPoints;
 var timeToWait;
 var timeoutDelay;
 var optionsPage = browser.runtime.openOptionsPage();
-var isActive = true;
+var isActive = false;
 
-
+function pressedStartButton(){
+  if(isActive == true){
+    console.log("stop button pressed");
+    killSmokescreen();
+  }else{
+    console.log("start button pressed");
+    isActive = true;
+    kickoff();
+  }
+}
 
 function configError(){
   console.log("configuration error");
@@ -43,6 +52,9 @@ function handleMessages(request, sender, orderWindow) {
     case "stop":
       killSmokescreen();
       break;
+    case "config":
+      confi
+
   }
 }
 
@@ -102,16 +114,27 @@ function kickoff(){
   configure();
 }
 
+function blockRequests(request){
+  console.log("new request");
+  console.log(request);
+
+}
 
 
 function killSmokescreen(){
   console.log("killing smokescreen");
   browser.tabs.remove(runningTab.id);
+  runningTab = undefined;
   isActive = false;
   return true;
 }
 
 console.log("hmm");
 
+
 browser.tabs.onRemoved.addListener(createNewTab);
 browser.runtime.onMessage.addListener(handleMessages);
+browser.browserAction.onClicked.addListener(pressedStartButton);
+
+// This one needs to go last!!!
+browser.webRequest.onBeforeRequest.addListener(blockRequests, request);

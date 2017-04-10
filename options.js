@@ -10,6 +10,7 @@ function saveConfiguration(event){
     timeoutDelay: document.querySelector("#timeoutDelay").value
   };
   browser.storage.local.set({config: config});
+  browser.runtime.sendMessage("kickoff");
 
 }
 
@@ -29,8 +30,6 @@ function parseStartingPoints(str){
         splits[0] = "http://www";
       }
     }
-
-
     newStarts.push(splits.join("."));
   }
   console.log(newStarts);
@@ -48,6 +47,7 @@ function restoreOptions(){
   function onError(error) {
     console.log(`Error: ${error}`);
   }
+
 
   var getting = browser.storage.local.get("config");
   getting.then(setCurrentChoices, onError);
