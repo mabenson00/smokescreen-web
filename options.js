@@ -15,6 +15,7 @@ function getFormFields(){
   };
 
   saveConfiguration(config);
+
 }
 
 function parseStartingPoints(str){
@@ -52,7 +53,7 @@ function restoreOptions(){
   }
 
   function onError(error) {
-    console.log(`Error: ${error}`);
+    setDefaultConfiguration();
   }
 
   var getting = browser.storage.local.get("config");
@@ -64,7 +65,7 @@ function setDefaultConfiguration(){
   let config = {
     isSet: true,
     timeToWait: 5000,
-    startingPoints: ["http://www.google.com", "http://www.wikipedia.org", "http://www.whitehouse.gov"],
+    startingPoints: ["http://www.google.com", "http://www.wikipedia.org", "http://www.whitehouse.gov", "http://www.varzesh3.com", "http://www.jamaicaobserver.com"],
     timeoutDelay: 10000
   };
   saveConfiguration();

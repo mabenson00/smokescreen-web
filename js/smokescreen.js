@@ -97,14 +97,13 @@ function getLinks(doc) {
     urls.push(linkObjects[i].href)
   }
   var url;
-  var doIBreak = false;
-  console.log("we have " + urls.length + " urls")
-  for(var a = 0; a < 100 || doIBreak == true || urls.length==0; a++){
-    url = urls[Math.floor(Math.random()*urls.length)];
-    doIBreak = validUrl(url);
+
+  while(validUrl(url) && urls.length > 0){
+    randomIndex = Math.floor(Math.random()*urls.length);
+    url = urls.slice(randomIndex, randomIndex+1);
   }
 
-  if(doIBreak == false){
+  if(urls.length == 0){
       console.log("asking for restart");
       askForRestart();
   }
@@ -115,8 +114,6 @@ function getLinks(doc) {
 }
 
 console.log("going");
-
-
 
 browser.runtime.sendMessage("kickoff");
 browser.runtime.onMessage.addListener(serveMaster);
