@@ -65,7 +65,7 @@ function isLoop(url){
   // console.log("url in myFeed? " + myFeed.includes(url));
   if(myFeed.includes(url)){
     console.log("caught in loop");
-    browser.runtime.sendMessage("stop");
+    browser.runtime.sendMessage("restart");
     return true;
   }
   else{
@@ -82,9 +82,7 @@ function validUrl(url){
       return false;
     }
     //one more test with testing for url in loop
-    if(isLoop(url)){
-      return false;
-    }
+    //isLoop(url);
 
   }
   return true;
