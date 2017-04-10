@@ -35,8 +35,8 @@ function serveMaster(request, sender, response){
   console.log(request);
   var restarting = setTimeout(askForRestart, request.timeoutDelay);
 
-  var s = new XMLSerializer();
-  var doc = s.serializeToString(document);
+  // var s = new XMLSerializer();
+  // var doc = s.serializeToString(document);
 
   var link = getLinks(document);
   if(link == undefined){

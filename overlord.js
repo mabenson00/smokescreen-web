@@ -5,6 +5,7 @@ var startingPoints;
 var timeToWait;
 var timeoutDelay;
 var optionsPage = browser.runtime.openOptionsPage();
+var isActive = true;
 function configure(){
 
   let configJson = browser.storage.local.get("config");
@@ -55,7 +56,7 @@ function saveConfiguration(){
 
 function createNewTab(tabId){
   console.log("Tab was closed");
-  if (killSmokescreen){
+  if (!isActive){
     return;
   }
   if(tabId == runningTab.id){
@@ -132,6 +133,7 @@ function kickoff(){
 function killSmokescreen(){
   console.log("killing smokescreen");
   browser.tabs.remove(runningTab.id);
+  isActive = false;
   return true;
 }
 
