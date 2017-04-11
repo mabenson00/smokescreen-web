@@ -9,10 +9,10 @@ function setDefaultConfiguration(){
   saveConfiguration(config);
 }
 
-setDefaultConfiguration();
 
 function saveConfiguration(config){
   browser.storage.local.set({config: config});
+
 }
 
 function getFormFields(){
@@ -32,13 +32,9 @@ function getFormFields(){
 
 function parseStartingPoints(str){
   var newStarts = [];
-  console.log(str);
   var starts = str.split(",");
-  console.log(starts);
   for(point of starts){
-    console.log(point);
-    splits = point.split(".");
-    console.log(splits);
+    splits = point.split(".").map(function(sp){return sp.trim()});
     if (splits[0].substr(0,4) != "http"){
       if (splits[0].substr(0,3) != "www"){
         splits.unshift("http://www");
@@ -48,12 +44,14 @@ function parseStartingPoints(str){
     }
     newStarts.push(splits.join("."));
   }
-  console.log(newStarts);
   return newStarts;
 }
 
 function restoreOptions(){
+
   function setCurrentChoices(conf){
+    a = conf;
+    debugger;
     if(conf.config == undefined){
       setDefaultConfiguration()
     }else{
