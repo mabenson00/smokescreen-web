@@ -10,12 +10,12 @@ var isActive = false;
 function pressedStartButton(){
   if(isActive == true){
     console.log("stop button pressed");
-    browser.browserAction.setIcon({path: "icons/icon-off.png"});
+    browser.browserAction.setIcon({path: "/icons/icon-off.png"});
     killSmokescreen();
   }else{
     console.log("start button pressed");
     isActive = true;
-    browser.browserAction.setIcon({path: "icons/icon-on.png"});
+    browser.browserAction.setIcon({path: "/icons/icon-on.png"});
     kickoff();
   }
 }
@@ -80,6 +80,27 @@ function getStartingPoint(){
   return startingPoints[Math.floor(Math.random()*startingPoints.length)];
 }
 
+function configure(){
+  function restoreConfiguration(conf){
+    console.log("restoring configuration");
+    console.log(conf);
+    console.log(conf.config);
+    timeToWait = conf.config.timeToWait; //
+    startingPoints = conf.config.startingPoints;
+    timeoutDelay = conf.config.timeoutDelay;
+    configured = true;
+    console.log("promises are all good, going now");
+    kickoff();
+  }
+
+  let configJson = browser.storage.local.get("config");
+  configJson.then(restoreConfiguration, configError);
+
+}
+
+
+
+
 function kickoff(){
 
   function go(){
@@ -92,23 +113,6 @@ function kickoff(){
         console.log("new tab is" + runningTab);
       }else{console.log("tab exists")};
     var timeoutId = setTimeout(sendResponse, timeToWait);
-  }
-
-  function configure(){
-    let configJson = browser.storage.local.get("config");
-    configJson.then(restoreConfiguration, configError);
-
-  }
-
-  function restoreConfiguration(conf){
-    console.log("restoring configuration");
-    console.log(conf.config);
-    timeToWait = conf.config.timeToWait; //
-    startingPoints = conf.config.startingPoints;
-    timeoutDelay = conf.config.timeoutDelay;
-    configured = true;
-    console.log("promises are all good, going now");
-    go();
   }
 
   if(!isActive){

@@ -1,34 +1,22 @@
 var configured;
 
-function setDefaultConfiguration(){
-  console.log("using default configuration");
-  let config = {
-    isSet: true,
-    timeToWait: 10000,
-    startingPoints: ["https://en.wikipedia.org/wiki/Main_Page"],
-    timeoutDelay: 10000
-  };
-  saveConfiguration(config);
-}
-
-
-
 function saveConfiguration(config){
-  console.log("saving config in local storage")
-  var settingStorage = browser.storage.local.set({config: config})
 
-
-  function settingForm() {
+  function setForm() {
     console.log("setting form runs")
-    document.querySelector("#timeToWait").value = config.timeToWait || 5000;
-    document.querySelector("#startingPoints").value = config.startingPoints || ["http://www.google.com", "http://www.wikipedia.org", "http://www.whitehouse.gov"];
-    document.querySelector("#timeoutDelay").value = config.timeoutDelay || 10000;
+    document.querySelector("#timeToWait").value = conf.config.timeToWait;
+    document.querySelector("#startingPoints").value = conf.config.startingPoints;
+    document.querySelector("#timeoutDelay").value = conf.config.timeoutDelay;
   }
 
   function onError() {
     console.log("There was an error")
   }
-  settingStorage.then(settingForm, onError)
+
+  console.log("saving config in local storage")
+  console.log(config);
+  var settingStorage = browser.storage.local.set({config: config})
+  settingStorage.then(restoreOptions, onError)
 
 }
 
@@ -70,13 +58,15 @@ function restoreOptions(){
     a = conf;
     debugger;
     if(conf.config == undefined){
-      setDefaultConfiguration()
-      console.log("setting default config")
+      console.log("setting default config");
+
+      setDefaultConfiguration();
     }else{
       console.log("restoring configuration");
       document.querySelector("#timeToWait").value = conf.config.timeToWait || 5000;
       document.querySelector("#startingPoints").value = conf.config.startingPoints || ["http://www.google.com", "http://www.wikipedia.org", "http://www.whitehouse.gov"];
       document.querySelector("#timeoutDelay").value = conf.config.timeoutDelay || 10000;
+      browser.runtime.sendMessage("config");
     }
   }
 
@@ -97,10 +87,8 @@ function setDefaultConfiguration(){
     startingPoints: ["http://www.google.com", "http://www.wikipedia.org", "http://www.whitehouse.gov", "http://www.jamaicaobserver.com"],
     timeoutDelay: 10000
   };
-  document.querySelector("#timeToWait").value = 5000;
-  document.querySelector("#startingPoints").value = ["http://www.google.com", "http://www.wikipedia.org", "http://www.whitehouse.gov"];
-  document.querySelector("#timeoutDelay").value = 10000;
-  saveConfiguration();
+
+  saveConfiguration(config);
 }
 
 

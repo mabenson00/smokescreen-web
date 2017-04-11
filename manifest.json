@@ -11,7 +11,7 @@
   },
 
   "options_ui": {
-    "page": "options.html"
+    "page": "html/options.html"
   },
 
   "browser_action": {
@@ -29,7 +29,7 @@
   ],
 
   "background": {
-    "scripts":["overlord.js"]
+    "scripts":["js/overlord.js"]
   },
   "permissions": [
     "tabs", "webNavigation","storage", "webRequest", "webRequestBlocking","https://*/*","http://*/*"
