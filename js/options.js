@@ -1,4 +1,5 @@
 var myFeed;
+var feedShown = false
 
 
 
@@ -135,12 +136,19 @@ function getFeed() {
 }
 
 function showFeed() {
-  var text = "";
-  for (i=0; i < myFeed.length; i++) {
-    text += "<li>" + myFeed[i] + "</li>"
+  if (feedShown == false) {
+    var text = "";
+    for (i=0; i < myFeed.length; i++) {
+      text += "<li>" + myFeed[i] + "</li>"
+    }
+    console.log("showing feed")
+    feedShown = true
+    document.getElementById("feed").innerHTML = text
+  }else {
+    console.log("hiding feed")
+    feedShown = false
+    document.getElementById("feed").innerHTML = ""
   }
-  console.log("show feed runs")
-  document.getElementById("feed").innerHTML = text
 }
 
 
