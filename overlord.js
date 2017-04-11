@@ -116,7 +116,11 @@ function kickoff(){
     return;
   }
 
-  configure();
+  if(configured){
+    go();
+  }else{
+    configure();
+  }
 }
 
 function blockRequests(request, opts, extra){

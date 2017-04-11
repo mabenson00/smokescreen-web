@@ -1,5 +1,4 @@
 var myFeed;
-
 function isEmpty(obj) {
     for(var key in obj) {
         if(obj.hasOwnProperty(key)){
@@ -33,24 +32,18 @@ function askForRestart(){
 
 function serveMaster(request, sender, response){
 
-
   console.log(request);
-  var restarting = setTimeout(askForRestart, request.timeoutDelay);
+  restarting = setTimeout(askForRestart, request.timeoutDelay);
 
   // var s = new XMLSerializer();
   // var doc = s.serializeToString(document);
 
   var link = getLinks(document);
-  if(link == undefined){
-    askForRestart();
-  }else{
+
     browser.runtime.sendMessage("log", link);
-
     window.location=link
-
-  }
+  
 }
-
 
 function saveUrls(url) {
   console.log("about to push")
