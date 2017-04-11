@@ -1,4 +1,6 @@
-var configured;
+var myFeed;
+
+
 
 function saveConfiguration(config){
 
@@ -90,18 +92,60 @@ function setDefaultConfiguration(){
 }
 
 
-//
-// function printFeed() {
-//
-//   var printThis ="";
-//   for(var i=0; i <myFeed.length; i++) {
-//     printThis += "<br>"+myFeed[i];
-//   }
-//   return printThis
-// }
+function isEmpty(obj) {
+    for(var key in obj) {
+        if(obj.hasOwnProperty(key)){
+            return false;
+          }
+    }
+    return true;
+}
+
+
+function getFeed() {
+  function isEmpty(obj) {
+    for(var key in obj) {
+        if(obj.hasOwnProperty(key)){
+            return false;
+          }
+    }
+    return true;
+  }
+
+  function onGot(item) {
+    if (isEmpty(item)) {
+      myFeed=[]
+    } else {
+
+      myFeed = item.myFeed
+    }
+    console.log(myFeed);
+    showFeed();
+  }
+
+  function onError(error) {
+    console.log(`Error: ${error}`)
+  }
+
+  let gettingItem = browser.storage.local.get('myFeed');
+  gettingItem.then(onGot, onError);
+
+
+
+}
+
+function showFeed() {
+  var text = "";
+  for (i=0; i < myFeed.length; i++) {
+    text += "<li>" + myFeed[i] + "</li>"
+  }
+  console.log("show feed runs")
+  document.getElementById("feed").innerHTML = text
+}
+
 
 //document.getElementById('feed').innerHTML = printFeed();
 
-
+document.getElementById("showFeed").addEventListener("click", getFeed);
 document.addEventListener("DOMContentLoaded", restoreOptions);
 document.querySelector("form").addEventListener("submit", getFormFields)
