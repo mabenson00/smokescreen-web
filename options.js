@@ -89,6 +89,20 @@ function restoreOptions(){
 }
 
 
+function setDefaultConfiguration(){
+  console.log("using default configuration");
+  let config = {
+    isSet: true,
+    timeToWait: 5000,
+    startingPoints: ["http://www.google.com", "http://www.wikipedia.org", "http://www.whitehouse.gov", "http://www.jamaicaobserver.com"],
+    timeoutDelay: 10000
+  };
+  document.querySelector("#timeToWait").value = 5000;
+  document.querySelector("#startingPoints").value = ["http://www.google.com", "http://www.wikipedia.org", "http://www.whitehouse.gov"];
+  document.querySelector("#timeoutDelay").value = 10000;
+  saveConfiguration();
+}
+
 
 //
 // function printFeed() {
