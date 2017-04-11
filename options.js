@@ -1,3 +1,15 @@
+function setDefaultConfiguration(){
+  console.log("using default configuration");
+  let config = {
+    isSet: true,
+    timeToWait: 5000,
+    startingPoints: ["http://www.google.com", "http://www.wikipedia.org", "http://www.whitehouse.gov", "http://www.jamaicaobserver.com"],
+    timeoutDelay: 10000
+  };
+  saveConfiguration(config);
+}
+
+setDefaultConfiguration();
 
 function saveConfiguration(config){
   browser.storage.local.set({config: config});
@@ -60,16 +72,7 @@ function restoreOptions(){
   getting.then(setCurrentChoices, onError);
 }
 
-function setDefaultConfiguration(){
-  console.log("using default configuration");
-  let config = {
-    isSet: true,
-    timeToWait: 5000,
-    startingPoints: ["http://www.google.com", "http://www.wikipedia.org", "http://www.whitehouse.gov", "http://www.jamaicaobserver.com"],
-    timeoutDelay: 10000
-  };
-  saveConfiguration();
-}
+
 
 //
 // function printFeed() {
