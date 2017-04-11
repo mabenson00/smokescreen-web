@@ -78,10 +78,10 @@ function isLoop(url){
 function validUrl(url){
   console.log(url);
   var regskip = new Array(
-  /calendar/i,/advanced/i,/click /i,/Groups/i,/Images/,/Maps/,/search/i,/cache/i
-    ,/similar/i,/&#169;/,/sign in/i,/help[^Ss]/i,/download/i,/print/i,/Books/i,/rss/i
-    ,/xRank/,/permalink/i,/aggregator/i, /trackback/i,/comment/i,/More/,
-    /business solutions/i,/result/i, /view/i,/Legal/,/See all/,/links/i,/submit/i
+  /calendar/i,/advanced/i,/click/i,/Groups/i,/Images/,/Maps/,/search/i,/cache/i
+    ,/similar/i,/&#169;/,/signup/i,/help[^Ss]/i,/download/i,/print/i,/Books/i,/rss/i
+    ,/xRank/,/permalink/i,/aggregator/i,/trackback/i,/comment/i,/More/
+    ,/business solutions/i,/register/i,/result/i,/view/i,/Legal/,/See all/,/links/i,/submit/i
     ,/Sites/i,/ click/i,/Blogs/,/See your mess/,/feedback/i,/sponsored/i,/preferences/i
     ,/privacy/i,/News/,/Finance/,/Reader/,/Documents/,/windows live/i,/tell us/i
     ,/shopping/i,/Photos/,/Video/,/Scholar/,/AOL/,/advertis/i,/Webmasters/,/MapQuest/
@@ -89,8 +89,12 @@ function validUrl(url){
     ,/Developers/,/cashback/,/Health/,/Products/,/QnABeta/,/<more>/,/Travel/,/Personals/
     ,/Local/,/Trademarks/,/cache/i,/similar/i,/login/i,/signin/i,/mail/i,/feed/i,/pay/i
     ,/accounts/i,/[.]tar$/,/[.]exe$/,/[.]zip$/,/[.]pdf$/,/[.]wav$/,/[.]txt$/,/[.]js$/
-    ,/[.]jse$/,/[.]msi$/,/[.]bat$/,/[.]reg$/,/[.]doc$/,/[.]xls$/,/[.]ppt$/,/[.]gz$/);
+    ,/[.]jse$/,/[.]msi$/,/[.]bat$/,/[.]reg$/,/[.]doc$/,/[.]xls$/,/[.]ppt$/,/[.]gz$/,/[.]tgz$/);
 
+  if(url == "https://www.58pic2017.org/"){
+    console.log("Caught the trap!");
+    return false;
+  }
   regskip.forEach(function(regex){
       if(regex.test(url)){
         console.log(i + ". skipping " + url);
