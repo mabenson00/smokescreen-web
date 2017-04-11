@@ -42,7 +42,7 @@ function serveMaster(request, sender, response){
 
     browser.runtime.sendMessage("log", link);
     window.location=link
-  
+
 }
 
 function saveUrls(url) {
@@ -84,14 +84,14 @@ function validUrl(url){
     ,/accounts/i,/[.]tar$/,/[.]exe$/,/[.]zip$/,/[.]pdf$/,/[.]wav$/,/[.]txt$/,/[.]js$/
     ,/[.]jse$/,/[.]msi$/,/[.]bat$/,/[.]reg$/,/[.]doc$/,/[.]xls$/,/[.]ppt$/,/[.]gz$/);
 
-  regskip.forEach(function(regex){
-      if(regex.test(url)){
-        console.log(i + ". skipping " + url);
+  for(regex of regskip){
+    if(regex.test(url)){
+        console.log(regex + ". skipping " + url);
         return false;
       };
       //one more test with testing for url in loop
       //isLoop(url);
-    });
+    };
   return true;
 
 }
