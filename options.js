@@ -1,18 +1,34 @@
+var configured;
+
 function setDefaultConfiguration(){
   console.log("using default configuration");
   let config = {
     isSet: true,
-    timeToWait: 5000,
-    startingPoints: ["http://www.google.com", "http://www.wikipedia.org", "http://www.whitehouse.gov", "http://www.jamaicaobserver.com"],
+    timeToWait: 10000,
+    startingPoints: ["https://en.wikipedia.org/wiki/Main_Page"],
     timeoutDelay: 10000
   };
   saveConfiguration(config);
 }
 
-setDefaultConfiguration();
+
 
 function saveConfiguration(config){
-  browser.storage.local.set({config: config});
+  console.log("saving config in local storage")
+  var settingStorage = browser.storage.local.set({config: config})
+
+
+  function settingForm() {
+    console.log("setting form runs")
+    document.querySelector("#timeToWait").value = config.timeToWait || 5000;
+    document.querySelector("#startingPoints").value = config.startingPoints || ["http://www.google.com", "http://www.wikipedia.org", "http://www.whitehouse.gov"];
+    document.querySelector("#timeoutDelay").value = config.timeoutDelay || 10000;
+  }
+
+  function onError() {
+    console.log("There was an error")
+  }
+  settingStorage.then(settingForm, onError)
 }
 
 function getFormFields(){
@@ -56,6 +72,7 @@ function restoreOptions(){
   function setCurrentChoices(conf){
     if(conf.config == undefined){
       setDefaultConfiguration()
+      console.log("setting default config")
     }else{
       console.log("restoring configuration");
       document.querySelector("#timeToWait").value = conf.config.timeToWait || 5000;
