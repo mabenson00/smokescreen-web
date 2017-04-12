@@ -58,6 +58,8 @@ function parseStartingPoints(str){
 function restoreOptions(){
 
   function setCurrentChoices(conf){
+    a = conf;
+    debugger;
     if(conf.config == undefined){
       console.log("setting default config");
 

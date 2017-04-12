@@ -49,36 +49,60 @@ function saveUrls(url) {
   })
 }
 
+
+function validDomain(url){
+  var regmatch = new Array(
+    /[.]com/i,/[.]org/i,/[.]net/i,/[.]edu/i,/[.]gov/i,/[.]mil/i,/[.]boston/i,/[.]miami/i,/[.]nyc/i,/[.]quebec/i,/[.]vegas/i,);
+  for(regex of regmatch){
+    if(regex.test(url)){
+      console.log("proper domain found " + url);
+
+      return true;
+    };
+
+  };
+
+  console.log("Improper domain found");
+  return false;
+}
 function isLoop(){;
   var lastSix = myFeed.slice(-6)
   if (([...new Set(lastSix)].length == 2 || [...new Set(lastSix)].length == 1) && lastSix.length == 6 ) {
     console.log("stuck in loop, asking for restart")
     askForRestart();
   }
+
 }
 
 function validUrl(url){
   console.log(url);
   if(url==undefined){return false;}
   var regskip = new Array(
-  /calendar/i,/advanced/i,/click /i,/Groups/i,/Images/,/Maps/,/search/i,/cache/i
-    ,/similar/i,/&#169;/,/sign in/i,/help[^Ss]/i,/download/i,/print/i,/Books/i,/rss/i
-    ,/xRank/,/permalink/i,/aggregator/i, /trackback/i,/comment/i,/More/,
-    /business solutions/i,/result/i, /view/i,/Legal/,/See all/,/links/i,/submit/i
-    ,/Sites/i,/ click/i,/Blogs/,/See your mess/,/feedback/i,/sponsored/i,/preferences/i
+  /calendar/i,/advanced/i,/click/i,/Groups/i,/Images/,/Maps/i,/search/i,/cache/i
+    ,/similar/i,/&#169;/,/signup/i,/download/i,/print/i,/Books/i,/rss/i
+    ,/xRank/,/permalink/i,/aggregator/i,/trackback/i,/comment/i,/More/
+    ,/business solutions/i,/register/i,/result/i,/view/i,/Legal/,/See all/,/links/i,/submit/i
+    ,/Sites/i,/ click/i,/Blogs/,/feedback/i,/sponsored/i,/preferences/i
     ,/privacy/i,/News/,/Finance/,/Reader/,/Documents/,/windows live/i,/tell us/i
     ,/shopping/i,/Photos/,/Video/,/Scholar/,/AOL/,/advertis/i,/Webmasters/,/MapQuest/
     ,/Movies/,/Music/,/Yellow Pages/,/jobs/i,/answers/i,/options/i,/customize/i,/settings/i
-    ,/Developers/,/cashback/,/Health/,/Products/,/QnABeta/,/<more>/,/Travel/,/Personals/
+    ,/Developers/,/cashback/,/Health/,/Products/,/<more>/,/Travel/,/Personals/
     ,/Local/,/Trademarks/,/cache/i,/similar/i,/login/i,/signin/i,/mail/i,/feed/i,/pay/i
     ,/accounts/i,/[.]tar$/,/[.]exe$/,/[.]zip$/,/[.]pdf$/,/[.]wav$/,/[.]txt$/,/[.]js$/
+
     ,/[.]jse$/,/[.]msi$/,/[.]bat$/,/[.]reg$/,/[.]doc$/,/[.]xls$/,/[.]ppt$/,/[.]gz$/, /javascript/, /maps[.]google/);
 
   for(regex of regskip){
     if(regex.test(url)){
         console.log(regex + ". skipping " + url);
+
         return false;
       };
+
+      //one more test with testing for url in loop
+      if( !validDomain(url)){
+        return false;
+      }
 
     };
   return true;
