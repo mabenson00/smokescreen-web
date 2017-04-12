@@ -49,21 +49,18 @@ function saveUrls(url) {
   console.log("about to push")
   var d = new Date();
   var n = d.getSeconds();
-  myFeed.push("<strong>"+n +"</strong>&nbsp;&nbsp;&nbsp;"+url)
+  // myFeed.push("<strong>"+n +"</strong>&nbsp;&nbsp;&nbsp;"+url)
+  myFeed.push(url)
   browser.storage.local.set({
     myFeed: myFeed
   })
-  //console.log("my feed: " + myFeed);
 }
 
-function isLoop(url){;
-  if(myFeed.includes(url)){
-    console.log("caught in loop");
-    browser.runtime.sendMessage("restart");
-    return true;
-  }
-  else{
-    return false;
+function isLoop(){;
+  var lastSix = myFeed.slice(-6)
+  if ([...new Set(lastSix)].length == 2) {
+    console.log("stuck in loop, asking for restart")
+    askForRestart();
   }
 }
 
@@ -88,14 +85,14 @@ function validUrl(url){
         console.log(regex + ". skipping " + url);
         return false;
       };
-      //one more test with testing for url in loop
-      //isLoop(url);
+
     };
   return true;
 
 }
 
 function getLinks(doc) {
+  isLoop();
   var linkObjects = doc.getElementsByTagName("a");
   var urls=[]
   for (i = 0; i < linkObjects.length; i++) {
