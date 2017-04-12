@@ -47,24 +47,20 @@ function serveMaster(request, sender, response){
 
 function saveUrls(url) {
   console.log("about to push")
+  var d = new Date();
+  var n = d.getSeconds();
+  // myFeed.push("<strong>"+n +"</strong>&nbsp;&nbsp;&nbsp;"+url)
   myFeed.push(url)
   browser.storage.local.set({
     myFeed: myFeed
   })
-  //console.log("my feed: " + myFeed);
 }
 
-function isLoop(url){
-  // console.log("is-loop url: " + url);
-  // console.log("url type: " + typeof(url));
-  // console.log("url in myFeed? " + myFeed.includes(url));
-  if(myFeed.includes(url)){
-    console.log("caught in loop");
-    browser.runtime.sendMessage("restart");
-    return true;
-  }
-  else{
-    return false;
+function isLoop(){;
+  var lastSix = myFeed.slice(-6)
+  if (([...new Set(lastSix)].length == 2 || [...new Set(lastSix)].length == 1) && lastSix.length == 6 ) {
+    console.log("stuck in loop, asking for restart")
+    askForRestart();
   }
 }
 
@@ -90,8 +86,7 @@ function validUrl(url){
         console.log(regex + ". skipping " + url);
         return false;
       };
-      //one more test with testing for url in loop
-      //isLoop(url);
+
     };
   return true;
 
@@ -113,10 +108,14 @@ function getOutsideUrls(urls){
 
 function getLinks(doc) {
 
+
   function getRandomUrl(urls){
     randomIndex = Math.floor(Math.random()*urls.length);
     return urls.slice(randomIndex, randomIndex+1)[0];
   }
+
+  isLoop();
+
   var linkObjects = doc.getElementsByTagName("a");
   var urls=[]
   for (i = 0; i < linkObjects.length; i++) {
