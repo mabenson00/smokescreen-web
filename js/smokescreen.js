@@ -31,18 +31,11 @@ function askForRestart(){
 }
 
 function serveMaster(request, sender, response){
-
   console.log(request);
   restarting = setTimeout(askForRestart, request.timeoutDelay);
-
-  // var s = new XMLSerializer();
-  // var doc = s.serializeToString(document);
-
   var link = getLinks(document);
-
-    browser.runtime.sendMessage("log", link);
-    window.location=link
-
+  browser.runtime.sendMessage("log", link);
+  window.location=link
 }
 
 function saveUrls(url) {
@@ -79,7 +72,7 @@ function validUrl(url){
     ,/Developers/,/cashback/,/Health/,/Products/,/QnABeta/,/<more>/,/Travel/,/Personals/
     ,/Local/,/Trademarks/,/cache/i,/similar/i,/login/i,/signin/i,/mail/i,/feed/i,/pay/i
     ,/accounts/i,/[.]tar$/,/[.]exe$/,/[.]zip$/,/[.]pdf$/,/[.]wav$/,/[.]txt$/,/[.]js$/
-    ,/[.]jse$/,/[.]msi$/,/[.]bat$/,/[.]reg$/,/[.]doc$/,/[.]xls$/,/[.]ppt$/,/[.]gz$/, /javascript/);
+    ,/[.]jse$/,/[.]msi$/,/[.]bat$/,/[.]reg$/,/[.]doc$/,/[.]xls$/,/[.]ppt$/,/[.]gz$/, /javascript/, /maps[.]google/);
 
   for(regex of regskip){
     if(regex.test(url)){
@@ -92,22 +85,24 @@ function validUrl(url){
 
 }
 
-function getOutsideUrls(urls){
-  console.log("trying to find an outside link");
-  var currentAddress = document.domain.split(".")[1];
-  // var splits = currentAddress.split(".");
-  // splits.shift();
-  // currentAddress = splits.join(".");
-  return urls.filter(function(url){
-    console.log(typeof url);
-    if(url.match(currentAddress) == null){
-      return url;
-    }
-  })
-}
+
 
 function getLinks(doc) {
 
+  function getOutsideUrls(urls){
+
+    console.log("trying to find an outside link");
+    var currentAddress = document.domain.split(".")[1];
+    // var splits = currentAddress.split(".");
+    // splits.shift();
+    // currentAddress = splits.join(".");
+    return urls.filter(function(url){
+      console.log(typeof url);
+      if(url.match(currentAddress) == null){
+        return url;
+      }
+    })
+  }
 
   function getRandomUrl(urls){
     randomIndex = Math.floor(Math.random()*urls.length);
