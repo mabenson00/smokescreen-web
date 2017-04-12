@@ -47,17 +47,16 @@ function serveMaster(request, sender, response){
 
 function saveUrls(url) {
   console.log("about to push")
-  myFeed.push(url)
+  var d = new Date();
+  var n = d.getSeconds();
+  myFeed.push("<strong>"+n +"</strong>&nbsp;&nbsp;&nbsp;"+url)
   browser.storage.local.set({
     myFeed: myFeed
   })
   //console.log("my feed: " + myFeed);
 }
 
-function isLoop(url){
-  // console.log("is-loop url: " + url);
-  // console.log("url type: " + typeof(url));
-  // console.log("url in myFeed? " + myFeed.includes(url));
+function isLoop(url){;
   if(myFeed.includes(url)){
     console.log("caught in loop");
     browser.runtime.sendMessage("restart");
