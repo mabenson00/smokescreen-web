@@ -66,6 +66,7 @@ function isLoop(){;
 
 function validUrl(url){
   console.log(url);
+  if(url==undefined){return false;}
   var regskip = new Array(
   /calendar/i,/advanced/i,/click /i,/Groups/i,/Images/,/Maps/,/search/i,/cache/i
     ,/similar/i,/&#169;/,/sign in/i,/help[^Ss]/i,/download/i,/print/i,/Books/i,/rss/i
@@ -78,7 +79,7 @@ function validUrl(url){
     ,/Developers/,/cashback/,/Health/,/Products/,/QnABeta/,/<more>/,/Travel/,/Personals/
     ,/Local/,/Trademarks/,/cache/i,/similar/i,/login/i,/signin/i,/mail/i,/feed/i,/pay/i
     ,/accounts/i,/[.]tar$/,/[.]exe$/,/[.]zip$/,/[.]pdf$/,/[.]wav$/,/[.]txt$/,/[.]js$/
-    ,/[.]jse$/,/[.]msi$/,/[.]bat$/,/[.]reg$/,/[.]doc$/,/[.]xls$/,/[.]ppt$/,/[.]gz$/);
+    ,/[.]jse$/,/[.]msi$/,/[.]bat$/,/[.]reg$/,/[.]doc$/,/[.]xls$/,/[.]ppt$/,/[.]gz$/, /javascript/);
 
   for(regex of regskip){
     if(regex.test(url)){
@@ -91,19 +92,51 @@ function validUrl(url){
 
 }
 
+function getOutsideUrls(urls){
+  console.log("trying to find an outside link");
+  var currentAddress = document.domain.split(".")[1];
+  // var splits = currentAddress.split(".");
+  // splits.shift();
+  // currentAddress = splits.join(".");
+  return urls.filter(function(url){
+    console.log(typeof url);
+    if(url.match(currentAddress) == null){
+      return url;
+    }
+  })
+}
+
 function getLinks(doc) {
+
+
+  function getRandomUrl(urls){
+    randomIndex = Math.floor(Math.random()*urls.length);
+    return urls.slice(randomIndex, randomIndex+1)[0];
+  }
+
   isLoop();
+
   var linkObjects = doc.getElementsByTagName("a");
   var urls=[]
   for (i = 0; i < linkObjects.length; i++) {
     urls.push(linkObjects[i].href)
   }
   var url;
-
+  var goOutside = Math.random() < .2;
+  if(goOutside){var outsideUrls = getOutsideUrls(urls);}
   do {
+    if(goOutside){
+      console.log(outsideUrls.length)
+      if(outsideUrls.length == 0){
+        console.log("can't go outside :(")
+        goOutside = false;
+        continue;
+      }
+      url = getRandomUrl(outsideUrls);
+    }else{
+      url = getRandomUrl(urls);
+    }
 
-    randomIndex = Math.floor(Math.random()*urls.length);
-    url = urls.slice(randomIndex, randomIndex+1)[0];
 
   } while(!validUrl(url) && urls.length > 0);
 
