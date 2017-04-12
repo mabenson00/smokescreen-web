@@ -58,7 +58,7 @@ function saveUrls(url) {
 
 function isLoop(){;
   var lastSix = myFeed.slice(-6)
-  if ([...new Set(lastSix)].length == 2) {
+  if (([...new Set(lastSix)].length == 2 || [...new Set(lastSix)].length == 1) && lastSix.length == 6 ) {
     console.log("stuck in loop, asking for restart")
     askForRestart();
   }
