@@ -88,9 +88,9 @@ function validUrl(url){
       };
 
       //one more test with testing for url in loop
-      if( !validDomain(url)){
-        return false;
-      }
+      // if( !validDomain(url)){
+      //   return false;
+      // }
 
     };
   return true;
@@ -144,7 +144,7 @@ function getLinks(doc) {
       url = getRandomUrl(urls);
     }
 
-
+    console.log(urls.length);
   } while(!validUrl(url) && urls.length > 0);
 
 

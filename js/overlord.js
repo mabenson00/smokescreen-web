@@ -129,7 +129,7 @@ function kickoff(){
 
 function blockRequests(request, opts, extra){
   if(request.tabId == runningTab.id){
-
+    console.log("Headers received");
     console.log(request);
     console.log(opts);
     console.log(extra);
@@ -157,4 +157,4 @@ browser.runtime.onMessage.addListener(handleMessages);
 browser.browserAction.onClicked.addListener(pressedStartButton);
 
 // This one needs to go last!!!
-browser.webRequest.onBeforeRequest.addListener(blockRequests, {urls: ["<all_urls>"]})//, ["blocking", runningTab.id]);
+browser.webRequest.onHeadersReceived.addListener(blockRequests, {urls: ["<all_urls>"]})//, ["blocking", runningTab.id]);
