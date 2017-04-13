@@ -33,7 +33,7 @@ function askForRestart(){
 function serveMaster(request, sender, response){
   console.log(request);
   restarting = setTimeout(askForRestart, request.timeoutDelay);
-  var link = getLinks(document);
+  let link = getLinks(document);
   browser.runtime.sendMessage("log", link);
   window.location=link
 }
@@ -51,8 +51,8 @@ function saveUrls(url) {
 
 
 function validDomain(url){
-  var regmatch = new Array(
-    /[.]com/i,/[.]org/i,/[.]net/i,/[.]edu/i,/[.]gov/i,/[.]mil/i,/[.]boston/i,/[.]miami/i,/[.]nyc/i,/[.]quebec/i,/[.]vegas/i,);
+  let regmatch = new Array(
+    /[.]com/i,/[.]org/i,/[.]net/i,/[.]edu/i,/[.]gov/i,/[.]mil/i,/[.]boston/i,/[.]miami/i,/[.]nyc/i,/[.]quebec/i,/[.]vegas/i,/[.]co/);
   for(regex of regmatch){
     if(regex.test(url)){
       console.log("proper domain found " + url);
@@ -66,7 +66,7 @@ function validDomain(url){
   return false;
 }
 function isLoop(){;
-  var lastSix = myFeed.slice(-6)
+  let lastSix = myFeed.slice(-6)
   if (([...new Set(lastSix)].length == 2 || [...new Set(lastSix)].length == 1) && lastSix.length == 6 ) {
     console.log("stuck in loop, asking for restart")
     askForRestart();
@@ -77,7 +77,7 @@ function isLoop(){;
 function validUrl(url){
   console.log(url);
   if(url==undefined){return false;}
-  var regskip = new Array(
+  let regskip = new Array(
   /calendar/i,/advanced/i,/click/i,/Groups/i,/Images/,/Maps/i,/search/i,/cache/i ,/similar/i,/&#169;/,/signup/i,/download/i,/print/i,/Books/i,/rss/i ,/xRank/,/permalink/i,/aggregator/i,/trackback/i,/comment/i,/More/ ,/business solutions/i,/register/i,/result/i,/view/i,/Legal/,/See all/,/links/i,/submit/i ,/Sites/i,/ click/i,/Blogs/,/feedback/i,/sponsored/i,/preferences/i ,/privacy/i,/News/,/Finance/,/Reader/,/Documents/,/windows live/i,/tell us/i ,/shopping/i,/Photos/,/Video/,/Scholar/,/AOL/,/advertis/i,/Webmasters/,/MapQuest/ ,/Movies/,/Music/,/Yellow Pages/,/jobs/i,/answers/i,/options/i,/customize/i,/settings/i ,/Developers/,/cashback/,/Health/,/Products/,/<more>/,/Travel/,/Personals/ ,/Local/,/Trademarks/,/cache/i,/similar/i,/login/i,/signin/i,/mail/i,/feed/i,/pay/i ,/accounts/i,/[.]tar$/,/[.]exe$/,/[.]zip$/,/[.]pdf$/,/[.]wav$/,/[.]txt$/,/[.]js$/ ,/[.]jse$/,/[.]msi$/,/[.]bat$/,/[.]reg$/,/[.]doc$/,/[.]xls$/,/[.]ppt$/,/[.]gz$/ ,/javascript/, /maps[.]google/, /hangout/, /singles/, /m3u/, /imgur[.]com/, /servicelogin/i);
 
   for(regex of regskip){
@@ -104,7 +104,7 @@ function getLinks(doc) {
   function getOutsideUrls(urls){
 
     console.log("trying to find an outside link");
-    var currentAddress = document.domain.split(".")[1];
+    let currentAddress = document.domain.split(".")[1];
     // var splits = currentAddress.split(".");
     // splits.shift();
     // currentAddress = splits.join(".");
@@ -123,13 +123,13 @@ function getLinks(doc) {
 
   isLoop();
 
-  var linkObjects = doc.getElementsByTagName("a");
-  var urls=[]
+  let linkObjects = doc.getElementsByTagName("a");
+  let urls=[]
   for (i = 0; i < linkObjects.length; i++) {
     urls.push(linkObjects[i].href)
   }
-  var url;
-  var goOutside = Math.random() < .2;
+  let url;
+  let goOutside = Math.random() < .2;
   if(goOutside){var outsideUrls = getOutsideUrls(urls);}
   do {
     if(goOutside){
