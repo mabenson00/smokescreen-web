@@ -78,19 +78,7 @@ function validUrl(url){
   console.log(url);
   if(url==undefined){return false;}
   var regskip = new Array(
-  /calendar/i,/advanced/i,/click/i,/Groups/i,/Images/,/Maps/i,/search/i,/cache/i
-    ,/similar/i,/&#169;/,/signup/i,/download/i,/print/i,/Books/i,/rss/i
-    ,/xRank/,/permalink/i,/aggregator/i,/trackback/i,/comment/i,/More/
-    ,/business solutions/i,/register/i,/result/i,/view/i,/Legal/,/See all/,/links/i,/submit/i
-    ,/Sites/i,/ click/i,/Blogs/,/feedback/i,/sponsored/i,/preferences/i
-    ,/privacy/i,/News/,/Finance/,/Reader/,/Documents/,/windows live/i,/tell us/i
-    ,/shopping/i,/Photos/,/Video/,/Scholar/,/AOL/,/advertis/i,/Webmasters/,/MapQuest/
-    ,/Movies/,/Music/,/Yellow Pages/,/jobs/i,/answers/i,/options/i,/customize/i,/settings/i
-    ,/Developers/,/cashback/,/Health/,/Products/,/<more>/,/Travel/,/Personals/
-    ,/Local/,/Trademarks/,/cache/i,/similar/i,/login/i,/signin/i,/mail/i,/feed/i,/pay/i
-    ,/accounts/i,/[.]tar$/,/[.]exe$/,/[.]zip$/,/[.]pdf$/,/[.]wav$/,/[.]txt$/,/[.]js$/
-
-    ,/[.]jse$/,/[.]msi$/,/[.]bat$/,/[.]reg$/,/[.]doc$/,/[.]xls$/,/[.]ppt$/,/[.]gz$/, /javascript/, /maps[.]google/);
+  /calendar/i,/advanced/i,/click/i,/Groups/i,/Images/,/Maps/i,/search/i,/cache/i ,/similar/i,/&#169;/,/signup/i,/download/i,/print/i,/Books/i,/rss/i ,/xRank/,/permalink/i,/aggregator/i,/trackback/i,/comment/i,/More/ ,/business solutions/i,/register/i,/result/i,/view/i,/Legal/,/See all/,/links/i,/submit/i ,/Sites/i,/ click/i,/Blogs/,/feedback/i,/sponsored/i,/preferences/i ,/privacy/i,/News/,/Finance/,/Reader/,/Documents/,/windows live/i,/tell us/i ,/shopping/i,/Photos/,/Video/,/Scholar/,/AOL/,/advertis/i,/Webmasters/,/MapQuest/ ,/Movies/,/Music/,/Yellow Pages/,/jobs/i,/answers/i,/options/i,/customize/i,/settings/i ,/Developers/,/cashback/,/Health/,/Products/,/<more>/,/Travel/,/Personals/ ,/Local/,/Trademarks/,/cache/i,/similar/i,/login/i,/signin/i,/mail/i,/feed/i,/pay/i ,/accounts/i,/[.]tar$/,/[.]exe$/,/[.]zip$/,/[.]pdf$/,/[.]wav$/,/[.]txt$/,/[.]js$/ ,/[.]jse$/,/[.]msi$/,/[.]bat$/,/[.]reg$/,/[.]doc$/,/[.]xls$/,/[.]ppt$/,/[.]gz$/ ,/javascript/, /maps[.]google/, /hangout/, /singles/, /m3u/, /imgur[.]com/, /servicelogin/i);
 
   for(regex of regskip){
     if(regex.test(url)){

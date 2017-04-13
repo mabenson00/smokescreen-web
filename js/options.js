@@ -58,8 +58,7 @@ function parseStartingPoints(str){
 function restoreOptions(){
 
   function setCurrentChoices(conf){
-    a = conf;
-    debugger;
+
     if(conf.config == undefined){
       console.log("setting default config");
 
@@ -141,7 +140,7 @@ function showFeed() {
   if (feedShown == false) {
     var text = "";
     for (i=0; i < myFeed.length; i++) {
-      text += "<li>" + myFeed[i] + "</li>"
+      text += "<li><a href=\""+myFeed[i]+"\">" + myFeed[i] + "</a></li>"
     }
     console.log("showing feed")
     feedShown = true

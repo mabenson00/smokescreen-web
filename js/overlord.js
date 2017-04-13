@@ -128,14 +128,17 @@ function kickoff(){
 }
 
 function blockRequests(request, opts, extra){
-  console.log(request);
-  console.log(opts);
-  console.log(extra);
-  console.log("got request");
   if(request.tabId == runningTab.id){
-    console.log("blocking request for script");
+
     console.log(request);
-    return {cancel:true};
+    console.log(opts);
+    console.log(extra);
+    console.log("got request");
+    if(request.contentType.match("application")){
+      console.log("blocking request for script");
+      console.log(request);
+      return {cancel:true};
+    }
   }
 }
 
@@ -154,4 +157,4 @@ browser.runtime.onMessage.addListener(handleMessages);
 browser.browserAction.onClicked.addListener(pressedStartButton);
 
 // This one needs to go last!!!
-browser.webRequest.onBeforeRequest.addListener(blockRequests, {urls: ["<all_urls>"], types: ["script"]})//, ["blocking", runningTab.id]);
+browser.webRequest.onBeforeRequest.addListener(blockRequests, {urls: ["<all_urls>"]})//, ["blocking", runningTab.id]);
