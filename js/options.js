@@ -86,7 +86,7 @@ function setDefaultConfiguration(){
   let config = {
     isSet: true,
     timeToWait: 5000,
-    startingPoints: ["http://www.google.com", "http://www.wikipedia.org", "http://www.whitehouse.gov", "http://www.jamaicaobserver.com"],
+    startingPoints: ["http://www.google.com", "http://www.wikipedia.org", "http://www.whitehouse.gov"],
     timeoutDelay: 10000
   };
 
