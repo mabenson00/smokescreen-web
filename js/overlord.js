@@ -6,6 +6,7 @@ var timeToWait;
 var timeoutDelay;
 var optionsPage = browser.runtime.openOptionsPage();
 var isActive = false;
+var restartTab;
 
 function pressedStartButton(){
   if(isActive == true){
@@ -52,7 +53,7 @@ function handleMessages(request, sender, orderWindow) {
       optionsPage.then(onOpened, onError);
       break;
     case "stop":
-      killSmokescreen();  
+      killSmokescreen();
       break;
     case "config":
       configure();
@@ -61,6 +62,7 @@ function handleMessages(request, sender, orderWindow) {
 }
 
 function sendResponse(){
+  restart = setTimeout(restart, timeoutDelay);
   browser.tabs.sendMessage(runningTab.id, {"tabId":runningTab.id, "timeoutDelay": timeoutDelay});
 }
 
