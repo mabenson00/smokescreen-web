@@ -128,17 +128,11 @@ function kickoff(){
 }
 
 function blockRequests(request, opts, extra){
+
   if(request.tabId == runningTab.id){
-    console.log("Headers received");
     console.log(request);
-    console.log(opts);
-    console.log(extra);
-    console.log("got request");
-    if(request.contentType.match("application")){
-      console.log("blocking request for script");
-      console.log(request);
-      return {cancel:true};
-    }
+
+    return {cancel:true};
   }
 }
 
@@ -157,4 +151,4 @@ browser.runtime.onMessage.addListener(handleMessages);
 browser.browserAction.onClicked.addListener(pressedStartButton);
 
 // This one needs to go last!!!
-browser.webRequest.onHeadersReceived.addListener(blockRequests, {urls: ["<all_urls>"]})//, ["blocking", runningTab.id]);
+ +browser.webRequest.onBeforeRequest.addListener(blockRequests, {urls: ["<all_urls>"], types: ["script"]})//, ["blocking", runningTab.id]);
