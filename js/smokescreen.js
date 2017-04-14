@@ -144,7 +144,7 @@ function getLinks(doc) {
       url = getRandomUrl(urls);
     }
 
-
+    console.log(urls.length);
   } while(!validUrl(url) && urls.length > 0);
 
 
