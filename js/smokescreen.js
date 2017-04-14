@@ -32,7 +32,7 @@ function askForRestart(){
 
 function serveMaster(request, sender, response){
   console.log(request);
-  restarting = setTimeout(askForRestart, request.timeoutDelay);
+  let restarting = setTimeout(askForRestart, request.timeoutDelay);
   let link = getLinks(document);
   browser.runtime.sendMessage("log", link);
   window.location=link
@@ -78,7 +78,7 @@ function validUrl(url){
   console.log(url);
   if(url==undefined){return false;}
   let regskip = new Array(
-  /calendar/i,/advanced/i,/click/i,/Groups/i,/Images/,/Maps/i,/search/i,/cache/i ,/similar/i,/&#169;/,/signup/i,/download/i,/print/i,/Books/i,/rss/i ,/xRank/,/permalink/i,/aggregator/i,/trackback/i,/comment/i,/More/ ,/business solutions/i,/register/i,/result/i,/view/i,/Legal/,/See all/,/links/i,/submit/i ,/Sites/i,/ click/i,/Blogs/,/feedback/i,/sponsored/i,/preferences/i ,/privacy/i,/News/,/Finance/,/Reader/,/Documents/,/windows live/i,/tell us/i ,/shopping/i,/Photos/,/Video/,/Scholar/,/AOL/,/advertis/i,/Webmasters/,/MapQuest/ ,/Movies/,/Music/,/Yellow Pages/,/jobs/i,/answers/i,/options/i,/customize/i,/settings/i ,/Developers/,/cashback/,/Health/,/Products/,/<more>/,/Travel/,/Personals/ ,/Local/,/Trademarks/,/cache/i,/similar/i,/login/i,/signin/i,/mail/i,/feed/i,/pay/i ,/accounts/i,/[.]tar$/,/[.]exe$/,/[.]zip$/,/[.]pdf$/,/[.]wav$/,/[.]txt$/,/[.]js$/ ,/[.]jse$/,/[.]msi$/,/[.]bat$/,/[.]reg$/,/[.]doc$/,/[.]xls$/,/[.]ppt$/,/[.]gz$/ ,/javascript/, /maps[.]google/, /hangout/, /singles/, /m3u/, /imgur[.]com/, /servicelogin/i);
+  /calendar/i,/advanced/i,/click/i,/Groups/i,/Images/,/Maps/i,/search/i,/cache/i ,/similar/i,/&#169;/,/signup/i,/download/i,/print/i,/Books/i,/rss/i ,/xRank/,/permalink/i,/aggregator/i,/trackback/i,/comment/i,/More/ ,/business solutions/i,/register/i,/result/i,/view/i,/Legal/,/See all/,/links/i,/submit/i ,/Sites/i,/ click/i,/Blogs/,/feedback/i,/sponsored/i,/preferences/i ,/privacy/i,/News/,/Finance/,/Reader/,/Documents/,/windows live/i,/tell us/i ,/shopping/i,/Photos/,/Video/,/Scholar/,/AOL/,/advertis/i,/Webmasters/,/MapQuest/ ,/Movies/,/Music/,/Yellow Pages/,/jobs/i,/answers/i,/options/i,/customize/i,/settings/i ,/Developers/,/cashback/,/Health/,/Products/,/<more>/,/Travel/,/Personals/ ,/Local/,/Trademarks/,/cache/i,/similar/i,/login/i,/signin/i,/mail/i,/feed/i,/pay/i ,/accounts/i,/[.]tar$/,/[.]exe$/,/[.]zip$/,/[.]pdf$/,/[.]wav$/,/[.]txt$/,/[.]js$/ ,/[.]jse$/,/[.]msi$/,/[.]bat$/,/[.]reg$/,/[.]doc$/,/[.]xls$/,/[.]ppt$/,/[.]gz$/ ,/javascript/, /maps[.]google/, /hangout/, /singles/, /m3u/, /imgur[.]com/, /servicelogin/i, /giphy/, /[.]jpg/, /[.]jpeg/, /[.]png/, /[.]gif/, /irc[:][/][/]/);
 
   for(regex of regskip){
     if(regex.test(url)){
@@ -129,7 +129,7 @@ function getLinks(doc) {
     urls.push(linkObjects[i].href)
   }
   let url;
-  let goOutside = Math.random() < .2;
+  let goOutside = Math.random() < .4;
   if(goOutside){var outsideUrls = getOutsideUrls(urls);}
   do {
     if(goOutside){

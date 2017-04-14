@@ -52,7 +52,7 @@ function handleMessages(request, sender, orderWindow) {
       optionsPage.then(onOpened, onError);
       break;
     case "stop":
-      killSmokescreen();
+      killSmokescreen();  
       break;
     case "config":
       configure();
@@ -104,6 +104,7 @@ function configure(){
 function kickoff(){
 
   function go(){
+
     if (runningTab == undefined){
       browser.tabs.create({'active': false,
                           'url': getStartingPoint()},

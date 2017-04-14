@@ -85,9 +85,9 @@ function setDefaultConfiguration(){
   console.log("using default configuration");
   let config = {
     isSet: true,
-    timeToWait: 5000,
-    startingPoints: ["http://www.google.com", "http://www.wikipedia.org", "http://www.whitehouse.gov"],
-    timeoutDelay: 10000
+    timeToWait: 2000,
+    startingPoints: ["https://en.wikipedia.org/wiki/Special:Random"],
+    timeoutDelay: 5000
   };
 
   saveConfiguration(config);
